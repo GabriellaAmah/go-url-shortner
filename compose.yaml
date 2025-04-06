@@ -1,0 +1,43 @@
+
+services:
+  url-shortner:
+    depends_on:
+      - mongodb
+    build: 
+      context: .
+      dockerfile: dockerfile
+    container_name: url-shortner-service
+    hostname: localhost
+    networks:
+      - servicenet
+    volumes:
+      - ./:/app
+    working_dir: /app
+    environment:
+      - GO111MODULE=on
+      - AIR_WORKSPACE_ROOT=/app
+    ports:
+      - 7090:7090
+    env_file:
+      - .env
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27018:27017
+    volumes:
+      - mongoData:/data/db
+    networks:
+      - servicenet
+
+networks:
+  servicenet:
+    driver: bridge
+
+volumes:
+  mongoData:
