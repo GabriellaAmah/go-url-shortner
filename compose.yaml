@@ -5,7 +5,7 @@ services:
       - mongodb
     build: 
       context: .
-      dockerfile: dockerfile
+      dockerfile: dockerfile.prod
     container_name: url-shortner-service
     hostname: localhost
     networks:
